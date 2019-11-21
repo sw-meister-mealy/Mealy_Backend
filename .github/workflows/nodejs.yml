@@ -33,3 +33,4 @@ jobs:
       run: yarn test
       env:
         MONGODB_URI: mongodb://localhost:27017/test
+        NISE_KEY: ${{ secrets.NEIS_KEY }}
