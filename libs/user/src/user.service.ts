@@ -37,4 +37,8 @@ export class UserService {
 
     await this.users.insertOne(user);
   }
+
+  public async addKeys(keys: Key[]): Promise<void> {
+    await this.keys.insertMany(keys);
+  }
 }
