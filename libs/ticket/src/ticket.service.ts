@@ -1,7 +1,6 @@
 import { DatabaseService } from '@app/database';
-import { Meal } from '@app/meal/class/meal.class';
-import { MealService } from '@app/meal/meal.service';
-import { Ticket } from '@app/ticket/class/ticket.class';
+import { Meal, MealService } from '@app/meal';
+import { Ticket } from '@app/ticket';
 import { User, UserService } from '@app/user';
 import { Inject, Injectable } from '@nestjs/common';
 import { Collection } from 'mongodb';

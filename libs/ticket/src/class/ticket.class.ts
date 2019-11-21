@@ -1,4 +1,4 @@
-import { MealTime } from '@app/meal/class/meal.class';
+import { MealTime } from '@app/meal';
 
 export class Ticket {
   public user: string;

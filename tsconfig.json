@@ -23,14 +23,8 @@
       "@app/meal": [
         "libs/meal/src"
       ],
-      "@app/meal/*": [
-        "libs/meal/src/*"
-      ],
       "@app/ticket": [
         "libs/ticket/src"
-      ],
-      "@app/ticket/*": [
-        "libs/ticket/src/*"
       ]
     }
   },

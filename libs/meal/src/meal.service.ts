@@ -1,5 +1,5 @@
 import { DatabaseService } from '@app/database';
-import { Meal } from '@app/meal/class/meal.class';
+import { Meal } from '@app/meal';
 import { Injectable } from '@nestjs/common';
 import { Collection } from 'mongodb';
 
@@ -9,5 +9,13 @@ export class MealService {
 
   constructor(database: DatabaseService) {
     this.meals = database.collection('meals');
+  }
+
+  public getMeal(year: number, month: number, day: number): Promise<Meal> {
+    return this.meals.find({
+      day,
+      month,
+      year,
+    }).next();
   }
 }
