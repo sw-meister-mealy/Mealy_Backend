@@ -1,6 +1,6 @@
 import { AuthService } from '@app/auth';
 import { Meal, MealService, MealTime } from '@app/meal';
-import { TicketService } from '@app/ticket';
+import { Ticket, TicketService } from '@app/ticket';
 import { Body, Controller, Delete, Inject, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiUseTags } from '@nestjs/swagger';
 import { ApplyDto } from './dto/apply.dto';
@@ -39,15 +39,8 @@ export class TicketController {
   @ApiOperation({
     title: '모든 티켓 가져오기',
   })
-  public async getAllTickets(@Body() payload: GetTicketsDto): Promise<Record<string, MealTime[]>> {
-    return (await this.ticketService.getTickets(await this.authService.auth(payload.token), payload)).reduce((previousValue, currentValue) => {
-      const dateString = `${currentValue.year.toFixed(4)}-${currentValue.month.toFixed(2)}-${currentValue.day.toFixed(2)}`;
-      if (!previousValue[dateString]) {
-        previousValue[dateString] = [];
-      }
-      previousValue[dateString].push(currentValue.time);
-      return previousValue;
-    }, {});
+  public async getAllTickets(@Body() payload: GetTicketsDto): Promise<Ticket[]> {
+    return this.ticketService.getTickets(await this.authService.auth(payload.token), payload);
   }
 
   @Put()
