@@ -12,7 +12,9 @@ export class AuthController {
   @Post()
   public async getToken(@Body(new ValidationPipe()) payload: GetTokenDto) {
     try {
-      return await this.authService.getToken(payload);
+      return {
+        token: await this.authService.getToken(payload),
+      };
     } catch (e) {
       throw new InternalServerErrorException(e.message);
     }
