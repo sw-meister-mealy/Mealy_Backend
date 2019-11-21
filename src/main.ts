@@ -22,6 +22,7 @@ async function bootstrap() {
     .setTitle('Mealy')
     .setDescription('Mealy API description')
     .setVersion(process.env.npm_package_version)
+    .setSchemes(config.isProduction ? 'https' : 'http')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
