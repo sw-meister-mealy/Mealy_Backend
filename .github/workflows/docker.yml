@@ -3,7 +3,7 @@ name: Docker CI
 on: [push]
 
 env:
-  IMAGE_NAME: $(echo "docker.pkg.github.com/${{ github.repository }}/backend" | awk '{print tolower($0)}')
+  IMAGE_NAME: docker.pkg.github.com/sw-meister-mealy/mealy_backend/backend
 
 jobs:
   build:
