@@ -1,12 +1,20 @@
+import { ConfigModule, ConfigService } from '@app/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseService } from './database.service';
 
 describe('DatabaseService', () => {
   let service: DatabaseService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [DatabaseService],
+      imports: [ConfigModule],
+      providers: [{
+        inject: [ConfigService],
+        provide: DatabaseService,
+        useFactory(config: ConfigService) {
+          return new DatabaseService(config.mongodbURI).connect();
+        },
+      }],
     }).compile();
 
     service = module.get<DatabaseService>(DatabaseService);
@@ -14,5 +22,9 @@ describe('DatabaseService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  afterAll(async () => {
+    await service.close();
   });
 });
