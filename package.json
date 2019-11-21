@@ -78,7 +78,9 @@
       "@app/database/(.*)": "<rootDir>/libs/database/src/$1",
       "@app/database": "<rootDir>/libs/database/src",
       "@app/user/(.*)": "<rootDir>/libs/user/src/$1",
-      "@app/user": "<rootDir>/libs/user/src"
+      "@app/user": "<rootDir>/libs/user/src",
+      "@app/meal/(.*)": "<rootDir>/libs/meal/src/$1",
+      "@app/meal": "<rootDir>/libs/meal/src"
     }
   }
 }

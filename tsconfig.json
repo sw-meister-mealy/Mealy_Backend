@@ -19,6 +19,12 @@
       ],
       "@app/user": [
         "libs/user/src"
+      ],
+      "@app/meal": [
+        "libs/meal/src"
+      ],
+      "@app/meal/*": [
+        "libs/meal/src/*"
       ]
     }
   },
