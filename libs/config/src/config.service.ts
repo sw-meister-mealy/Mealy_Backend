@@ -15,6 +15,18 @@ export class ConfigService {
   public get host(): string {
     return this.env.HOST;
   }
+
+  public get apm(): string {
+    return this.env.ES_APM;
+  }
+
+  public get nodeEnv(): string {
+    return this.env.NODE_ENV || 'development';
+  }
+
+  public get isProduction(): boolean {
+    return this.nodeEnv === 'production';
+  }
 }
 
 export const config: ConfigService = new ConfigService();
