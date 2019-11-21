@@ -24,12 +24,18 @@ export class MealService {
     }
 
     return (await this.meals.find({
-      ...day && { day },
-      month,
-      year,
+      day: {
+        $eq: day,
+      },
+      month: {
+        $eq: month,
+      },
+      year: {
+        $eq: year,
+      },
     }).toArray()).sort((a, b) => {
       return a.day - b.day;
-    });
+    }).map((i) => new Meal(i));
   }
 
   private async getMealDataFromNeis(data: {

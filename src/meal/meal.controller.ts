@@ -16,6 +16,14 @@ export class MealController {
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
+  @Get(':year-:month-:day')
+  public async getMeal(@Param() {
+    year, month, day,
+  }: GetMealDto) {
+    return this.mealService.getMeal(parseInt(year, 10), parseInt(month, 10), parseInt(day, 10));
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':year-:month')
   public async getMonthMeal(@Param() {
     year, month,
