@@ -20,6 +20,8 @@
     "@app/meal/(.*)": "<rootDir>/../libs/meal/src/$1",
     "@app/meal": "<rootDir>/../libs/meal/src",
     "@app/ticket/(.*)": "<rootDir>/../libs/ticket/src/$1",
-    "@app/ticket": "<rootDir>/../libs/ticket/src"
+    "@app/ticket": "<rootDir>/../libs/ticket/src",
+    "@app/auth/(.*)": "<rootDir>/../libs/auth/src/$1",
+    "@app/auth": "<rootDir>/../libs/auth/src"
   }
 }

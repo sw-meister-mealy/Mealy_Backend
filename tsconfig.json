@@ -25,6 +25,9 @@
       ],
       "@app/ticket": [
         "libs/ticket/src"
+      ],
+      "@app/auth": [
+        "libs/auth/src"
       ]
     }
   },

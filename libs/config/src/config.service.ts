@@ -38,6 +38,10 @@ export class ConfigService {
     }
     return this.env.MONGODB_URI;
   }
+
+  public get jwtSecret(): string {
+    return this.env.JWT_SECRERT;
+  }
 }
 
 export const config: ConfigService = new ConfigService();
