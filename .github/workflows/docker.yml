@@ -63,10 +63,8 @@ jobs:
       - name: Push to Repositry with Latest tag
         run: docker push $HEROKU_IMAGE
 
-      - uses: actions/heroku@master
-        with:
-          args: 'container:login'
+      - name: Heroku Login
+        run: heroku container:login
 
-      - uses: actions/heroku@master
-        with:
-          args: 'container:release web'
+      - name: Heroky Release
+        run: heroku container:release web
