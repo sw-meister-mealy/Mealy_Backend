@@ -44,7 +44,7 @@ jobs:
     needs: build
     env:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      HEROKU_APP: cooktak
+      HEROKU_APP: sw-meister-mealy
       HEROKU_IMAGE: registry.heroku.com/sw-meister-mealy/web
 
     steps:
