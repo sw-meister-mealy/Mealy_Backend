@@ -1,0 +1,46 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {
+    "no-unused-expression": true
+  },
+  "rules": {
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "member-access": true,
+    "ordered-imports": true,
+    "max-line-length": [
+      true,
+      150
+    ],
+    "member-ordering": true,
+    "interface-name": false,
+    "arrow-parens": false,
+    "object-literal-sort-keys": true,
+    "semicolon": true,
+    "indent": [
+      true,
+      "spaces",
+      2
+    ],
+    "prefer-conditional-expression": true,
+    "prefer-while": true,
+    "prefer-template": true,
+    "prefer-switch": true,
+    "prefer-object-spread": true,
+    "prefer-function-over-method": true,
+    "prefer-const": true,
+    "prefer-readonly": true,
+    "prefer-method-signature": true,
+    "prefer-for-of": true,
+    "no-for-in-array": true,
+    "eofline": true,
+    "await-promise": true,
+    "no-return-await": true
+  },
+  "rulesDirectory": []
+}
