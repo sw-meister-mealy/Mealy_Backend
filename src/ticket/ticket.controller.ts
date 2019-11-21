@@ -5,6 +5,7 @@ import { Body, Controller, Delete, Inject, Post, Put, ValidationPipe } from '@ne
 import { ApiOperation, ApiUseTags } from '@nestjs/swagger';
 import { ApplyDto } from './dto/apply.dto';
 import { GetTicketsDto } from './dto/get-tickets.dto';
+import { TransferDto } from './dto/transfer.dto';
 
 @Controller('ticket')
 @ApiUseTags('Ticket')
@@ -63,5 +64,14 @@ export class TicketController {
   })
   public async delete(@Body(new ValidationPipe()) payload: ApplyDto) {
     await this.ticketService.delete(await this.authService.auth(payload.token), TicketController.recordToMealArray(payload.meals));
+  }
+
+  @Post('transfer')
+  @ApiOperation({
+    title: '티켓 이동',
+  })
+  public async transfer(@Body(new ValidationPipe()) payload: TransferDto) {
+    const user = await this.authService.auth(payload.token);
+    await this.ticketService.transfer(user.studentId, payload.to, TicketController.recordToMealArray(payload.meals));
   }
 }

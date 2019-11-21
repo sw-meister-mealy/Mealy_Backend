@@ -66,4 +66,17 @@ export class TicketService {
       },
     }).toArray()];
   }
+
+  public async transfer(from: string, to: string, meal: Meal[]): Promise<void> {
+    for (const i of meal) {
+      await this.tickets.updateOne({
+        user: from,
+        ...i,
+      }, {
+        $set: {
+          user: to,
+        },
+      });
+    }
+  }
 }
