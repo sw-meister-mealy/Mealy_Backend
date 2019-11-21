@@ -1,7 +1,7 @@
 import { AuthService } from '@app/auth';
 import { Meal, MealService, MealTime } from '@app/meal';
 import { TicketService } from '@app/ticket';
-import { Body, Controller, Delete, Inject, Post, Put, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Inject, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiUseTags } from '@nestjs/swagger';
 import { ApplyDto } from './dto/apply.dto';
 import { GetTicketsDto } from './dto/get-tickets.dto';
@@ -39,7 +39,7 @@ export class TicketController {
   @ApiOperation({
     title: '모든 티켓 가져오기',
   })
-  public async getAllTickets(@Body(new ValidationPipe()) payload: GetTicketsDto): Promise<Record<string, MealTime[]>> {
+  public async getAllTickets(@Body() payload: GetTicketsDto): Promise<Record<string, MealTime[]>> {
     return (await this.ticketService.getTickets(await this.authService.auth(payload.token), payload)).reduce((previousValue, currentValue) => {
       const dateString = `${currentValue.year.toFixed(4)}-${currentValue.month.toFixed(2)}-${currentValue.day.toFixed(2)}`;
       if (!previousValue[dateString]) {
@@ -54,7 +54,7 @@ export class TicketController {
   @ApiOperation({
     title: '급식 신청',
   })
-  public async apply(@Body(new ValidationPipe()) payload: ApplyDto) {
+  public async apply(@Body() payload: ApplyDto) {
     await this.ticketService.apply(await this.authService.auth(payload.token), TicketController.recordToMealArray(payload.meals));
   }
 
@@ -62,7 +62,7 @@ export class TicketController {
   @ApiOperation({
     title: '급식 신청 취소',
   })
-  public async delete(@Body(new ValidationPipe()) payload: ApplyDto) {
+  public async delete(@Body() payload: ApplyDto) {
     await this.ticketService.delete(await this.authService.auth(payload.token), TicketController.recordToMealArray(payload.meals));
   }
 
@@ -70,7 +70,7 @@ export class TicketController {
   @ApiOperation({
     title: '티켓 이동',
   })
-  public async transfer(@Body(new ValidationPipe()) payload: TransferDto) {
+  public async transfer(@Body() payload: TransferDto) {
     const user = await this.authService.auth(payload.token);
     await this.ticketService.transfer(user.studentId, payload.to, TicketController.recordToMealArray(payload.meals));
   }
