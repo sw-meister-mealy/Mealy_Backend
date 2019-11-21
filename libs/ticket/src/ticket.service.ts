@@ -1,7 +1,7 @@
 import { DatabaseService } from '@app/database';
 import { Meal, MealService } from '@app/meal';
 import { Ticket } from '@app/ticket';
-import { User, UserService } from '@app/user';
+import { UserService } from '@app/user';
 import { Inject, Injectable } from '@nestjs/common';
 import { Collection } from 'mongodb';
 
@@ -17,36 +17,39 @@ export class TicketService {
     this.tickets = database.collection('tickets');
   }
 
-  public async apply(user: User, meal: Meal[]) {
+  public async apply(user: string, meal: Meal[]) {
     meal.map((i) => {
       delete i.menu;
       return i;
     });
     await this.tickets.insertMany(meal.map((i) => {
       return {
-        user: user.studentId,
+        user,
         ...i,
       };
     }));
   }
 
-  public async delete(user: User, meal: Meal[]) {
-    for (const i of meal) {
+  public async delete(user: string, meal: Meal[]) {
+    for (const { day, month, year, time } of meal) {
       await this.tickets.deleteOne({
-        user: user.studentId,
-        ...i,
+        day,
+        month,
+        time,
+        user,
+        year,
       });
     }
   }
 
-  public async getTickets(user: User, { year, month }: {
+  public async getTickets(user: string, { year, month }: {
     year: number;
     month: number;
   }): Promise<Ticket[]> {
     return [...await this.tickets.find({
       month,
       user: {
-        $eq: user.studentId,
+        $eq: user,
       },
       year,
     }).toArray(), ...await this.tickets.find({
@@ -54,12 +57,12 @@ export class TicketService {
         $gt: month,
       },
       user: {
-        $eq: user.studentId,
+        $eq: user,
       },
       year,
     }).toArray(), ...await this.tickets.find({
       user: {
-        $eq: user.studentId,
+        $eq: user,
       },
       year: {
         $gt: year,
@@ -68,10 +71,12 @@ export class TicketService {
   }
 
   public async transfer(from: string, to: string, meal: Meal[]): Promise<void> {
-    for (const i of meal) {
+    for (const { day, month, year } of meal) {
       await this.tickets.updateOne({
+        day,
+        month,
         user: from,
-        ...i,
+        year,
       }, {
         $set: {
           user: to,

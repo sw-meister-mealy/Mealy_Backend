@@ -40,7 +40,8 @@ export class TicketController {
     title: '모든 티켓 가져오기',
   })
   public async getAllTickets(@Body() payload: GetTicketsDto): Promise<Ticket[]> {
-    return this.ticketService.getTickets(await this.authService.auth(payload.token), payload);
+    const user = await this.authService.auth(payload.token);
+    return this.ticketService.getTickets(user.studentId, payload);
   }
 
   @Put()
@@ -48,7 +49,8 @@ export class TicketController {
     title: '급식 신청',
   })
   public async apply(@Body() payload: ApplyDto) {
-    await this.ticketService.apply(await this.authService.auth(payload.token), TicketController.recordToMealArray(payload.meals));
+    const user = await this.authService.auth(payload.token);
+    await this.ticketService.apply(user.studentId, TicketController.recordToMealArray(payload.meals));
   }
 
   @Delete()
@@ -56,7 +58,8 @@ export class TicketController {
     title: '급식 신청 취소',
   })
   public async delete(@Body() payload: ApplyDto) {
-    await this.ticketService.delete(await this.authService.auth(payload.token), TicketController.recordToMealArray(payload.meals));
+    const user = await this.authService.auth(payload.token);
+    await this.ticketService.delete(user.studentId, TicketController.recordToMealArray(payload.meals));
   }
 
   @Post('transfer')
