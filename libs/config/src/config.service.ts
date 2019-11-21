@@ -33,7 +33,7 @@ export class ConfigService {
   }
 
   public get mongodbURI(): string {
-    if (this.env.MONGODB_URI) {
+    if (!this.env.MONGODB_URI) {
       throw new Error('$MONGODB_URI is undefined');
     }
     return this.env.MONGODB_URI;
