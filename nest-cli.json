@@ -37,6 +37,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/meal/tsconfig.lib.json"
       }
+    },
+    "ticket": {
+      "type": "library",
+      "root": "libs/ticket",
+      "entryFile": "index",
+      "sourceRoot": "libs/ticket/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/ticket/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {
