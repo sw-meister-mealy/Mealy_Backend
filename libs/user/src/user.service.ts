@@ -32,6 +32,8 @@ export class UserService {
       throw new Error('User Key is not exist');
     }
 
+    delete info.key;
+
     const user: User = {
       ...payload,
       ...info,
