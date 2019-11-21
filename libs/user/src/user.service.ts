@@ -15,11 +15,11 @@ export class UserService {
     this.keys = database.collection('keys');
   }
 
-  public getUser(filter: FilterQuery<User>): Promise<User | null> {
-    return this.users.find(filter).next();
+  public async getUser(filter: FilterQuery<User>): Promise<User | null> {
+    return new User(await this.users.find(filter).next());
   }
 
-  public async newUser(payload: NewUserDto) {
+  public async newUser(payload: NewUserDto): Promise<void> {
     const info = await this.keys.find({
       key: {
         $eq: payload.key,

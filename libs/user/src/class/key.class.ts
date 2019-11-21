@@ -20,4 +20,8 @@ export class Key {
     example: 'SLoWMoTIoN',
   })
   public readonly key: string;
+
+  constructor(key: Key) {
+    Object.assign(this, key);
+  }
 }
