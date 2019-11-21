@@ -1,0 +1,72 @@
+name: Docker CI
+
+on: [push]
+
+env:
+  IMAGE_NAME: docker.pkg.github.com/${{ github.repository }}/backend
+
+jobs:
+  build:
+    name: Build Docker Image and Push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Authenticating to Docker repositry
+        run: docker login docker.pkg.github.com -u park012241 -p ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME:${{ github.sha }}
+
+      - name: Push to Repositry with SHA tag
+        run: docker push $IMAGE_NAME:${{ github.sha }}
+
+  push:
+    name: Pull image and add latest tag
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Authenticating to Docker repositry
+        run: docker login docker.pkg.github.com -u park012241 -p ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull image
+        run: docker pull $IMAGE_NAME:${{ github.sha }}
+
+      - name: Add Latest Tag to image
+        run: docker tag $IMAGE_NAME:${{ github.sha }} $IMAGE_NAME:latest
+
+      - name: Push to Repositry with Latest tag
+        run: docker push $IMAGE_NAME:latest
+
+  deploy:
+    name: Deploy to Heroku
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      HEROKU_APP: cooktak
+      HEROKU_IMAGE: registry.heroku.com/sw-meister-mealy/web
+
+    steps:
+      - name: Authenticating to Docker repositry
+        run: docker login docker.pkg.github.com -u park012241 -p ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Authenticating to Heroku repositry
+        run: docker login registry.heroku.com -u _ -p ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Pull image
+        run: docker pull $IMAGE_NAME:${{ github.sha }}
+
+      - name: Add Latest Tag to image
+        run: docker tag $IMAGE_NAME:${{ github.sha }} $HEROKU_IMAGE
+
+      - name: Push to Repositry with Latest tag
+        run: docker push $HEROKU_IMAGE
+
+      - uses: actions/heroku@master
+        with:
+          args: 'container:login'
+
+      - uses: actions/heroku@master
+        with:
+          args: 'container:release web'
