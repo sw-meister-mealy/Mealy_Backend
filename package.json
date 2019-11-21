@@ -27,6 +27,7 @@
     "dotenv": "^8.2.0",
     "elastic-apm-node": "^3.2.0",
     "fastify-swagger": "^2.4.0",
+    "mongodb": "^3.3.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.3",
@@ -39,6 +40,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.1",
     "@types/jest": "^24.0.18",
+    "@types/mongodb": "^3.3.11",
     "@types/node": "^12.7.5",
     "@types/supertest": "^2.0.8",
     "jest": "^24.9.0",
@@ -70,7 +72,9 @@
     ],
     "moduleNameMapper": {
       "@app/config/(.*)": "<rootDir>/libs/config/src/$1",
-      "@app/config": "<rootDir>/libs/config/src"
+      "@app/config": "<rootDir>/libs/config/src",
+      "@app/database/(.*)": "<rootDir>/libs/database/src/$1",
+      "@app/database": "<rootDir>/libs/database/src"
     }
   }
 }

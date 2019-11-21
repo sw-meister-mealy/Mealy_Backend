@@ -13,6 +13,12 @@
     "paths": {
       "@app/config": [
         "libs/config/src"
+      ],
+      "@app/database": [
+        "libs/database/src"
+      ],
+      "@app/database/*": [
+        "libs/database/src/*"
       ]
     }
   },

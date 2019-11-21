@@ -31,6 +31,13 @@ export class ConfigService {
   public get isProduction(): boolean {
     return this.nodeEnv === 'production';
   }
+
+  public get mongodbURI(): string {
+    if (this.env.MONGODB_URI) {
+      throw new Error('$MONGODB_URI is undefined');
+    }
+    return this.env.MONGODB_URI;
+  }
 }
 
 export const config: ConfigService = new ConfigService();
