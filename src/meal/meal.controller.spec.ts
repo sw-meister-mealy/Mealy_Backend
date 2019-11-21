@@ -1,3 +1,4 @@
+import { MealModule } from '@app/meal';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MealController } from './meal.controller';
 
@@ -7,6 +8,7 @@ describe('Meal Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MealController],
+      imports: [MealModule],
     }).compile();
 
     controller = module.get<MealController>(MealController);

@@ -1,4 +1,8 @@
+import { ConfigModule } from '@app/config';
+import { DatabaseModule } from '@app/database';
+import { HttpService } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import axios from 'axios';
 import { MealService } from './meal.service';
 
 describe('MealService', () => {
@@ -6,7 +10,11 @@ describe('MealService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [MealService],
+      imports: [DatabaseModule, ConfigModule],
+      providers: [MealService, HttpService, {
+        provide: 'AXIOS_INSTANCE_TOKEN',
+        useValue: axios.create(),
+      }],
     }).compile();
 
     service = module.get<MealService>(MealService);
