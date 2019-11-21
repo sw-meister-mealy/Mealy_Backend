@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { config as conf } from 'dotenv';
 
 @Injectable()
 export class ConfigService {
   private env: Record<string, string> = {};
 
   constructor() {
-    this.env = process.env;
+    conf();
+    this.env = {
+      ...process.env,
+    };
   }
 
   public get port(): string {
