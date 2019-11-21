@@ -40,7 +40,14 @@ export class ConfigService {
   }
 
   public get jwtSecret(): string {
-    return this.env.JWT_SECRERT;
+    return this.env.JWT_SECRET;
+  }
+
+  public get neisKey(): string {
+    if (!this.env.NEIS_KEY) {
+      throw new Error('$NEIS_KEY is undefined');
+    }
+    return this.env.NEIS_KEY;
   }
 }
 
