@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { Collection, FilterQuery } from 'mongodb';
 import { Key } from './class/key.class';
 import { User } from './class/user.class';
-import { NewUserDto } from './dto/new-user.dto';
 
 @Injectable()
 export class UserService {
@@ -19,7 +18,11 @@ export class UserService {
     return new User(await this.users.find(filter).next());
   }
 
-  public async newUser(payload: NewUserDto): Promise<void> {
+  public async newUser(payload: {
+    key: string;
+    username: string;
+    password: string;
+  }): Promise<void> {
     const info = await this.keys.find({
       key: {
         $eq: payload.key,

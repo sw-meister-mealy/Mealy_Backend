@@ -1,3 +1,4 @@
+import { UserService } from '@app/user';
 import {
   Body,
   ClassSerializerInterceptor,
@@ -10,10 +11,9 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiUseTags } from '@nestjs/swagger';
-import { Key } from './class/key.class';
+import { Key } from '../../libs/user/src/class/key.class';
 import { AddKeysDto } from './dto/add-keys.dto';
 import { NewUserDto } from './dto/new-user.dto';
-import { UserService } from './user.service';
 
 @Controller('user')
 @ApiUseTags('User')

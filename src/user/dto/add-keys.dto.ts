@@ -1,7 +1,7 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
-import { Key } from '../class/key.class';
+import { Key } from '../../../libs/user/src/class/key.class';
 
 export class AddKeysDto {
   @ValidateNested()
