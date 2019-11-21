@@ -1,7 +1,7 @@
 import { ConfigService } from '@app/config';
 import { DatabaseService } from '@app/database';
 import { Meal, MealTime } from '@app/meal';
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpService, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Collection } from 'mongodb';
 import { MealCrawlEnum } from './enum/meal-crawl.enum';
 
@@ -16,26 +16,7 @@ export class MealService {
   }
 
   public async getMeal(year: number, month: number, day?: number): Promise<Meal[]> {
-    if (!await this.meals.find({
-      month,
-      year,
-    }).hasNext()) {
-      await this.saveMonth(year, month);
-    }
-
-    return (await this.meals.find({
-      day: {
-        $eq: day,
-      },
-      month: {
-        $eq: month,
-      },
-      year: {
-        $eq: year,
-      },
-    }).toArray()).sort((a, b) => {
-      return a.day - b.day;
-    }).map((i) => new Meal(i));
+    return (await this.getMonth(year, month)).sort((a, b) => a.day - b.day).filter((i) => !day || i.day === day);
   }
 
   private async getMealDataFromNeis(data: {
@@ -62,10 +43,14 @@ export class MealService {
       responseType: 'json',
     }).toPromise()).data;
 
+    if (!payload.mealServiceDietInfo) {
+      throw new InternalServerErrorException('Meal Fetch Failed');
+    }
+
     return payload.mealServiceDietInfo[1].row;
   }
 
-  private async saveMonth(year: number, month: number): Promise<Meal[]> {
+  private async getMonth(year: number, month: number): Promise<Meal[]> {
     const mealData: Meal[] = (await this.getMealDataFromNeis({
       ATPT_OFCDC_SC_CODE: 'G10',
       MLSV_YMD: `${year}${month}`,
@@ -88,8 +73,6 @@ export class MealService {
         year: parseInt(i.MLSV_YMD.substr(0, 4), 10),
       };
     });
-
-    await this.meals.insertMany(mealData);
     return mealData.map((i) => new Meal(i));
   }
 }
