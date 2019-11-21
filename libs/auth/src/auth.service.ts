@@ -25,11 +25,7 @@ export class AuthService {
       },
     });
 
-    if (!query) {
-      return null;
-    }
-
-    if (!Buffer.from(query.password).compare(Buffer.from(password))) {
+    if (!query || !Buffer.from(query.password).compare(Buffer.from(password))) {
       return null;
     }
 

@@ -17,24 +17,53 @@ export class TicketService {
     this.tickets = database.collection('tickets');
   }
 
-  private async apply(user: User, meal: Meal) {
-    delete meal.menu;
-    await this.tickets.insertOne({
-      user: user.studentId,
-      ...meal,
+  public async apply(user: User, meal: Meal[]) {
+    meal.map((i) => {
+      delete i.menu;
+      return i;
     });
+    await this.tickets.insertMany(meal.map((i) => {
+      return {
+        user: user.studentId,
+        ...i,
+      };
+    }));
   }
 
-  private async getTickets(user: User, { year, month }: {
+  public async delete(user: User, meal: Meal[]) {
+    for (const i of meal) {
+      await this.tickets.deleteOne({
+        user: user.studentId,
+        ...i,
+      });
+    }
+  }
+
+  public async getTickets(user: User, { year, month }: {
     year: number;
     month: number;
-  }) {
-    return this.tickets.find({
+  }): Promise<Ticket[]> {
+    return [...await this.tickets.find({
       month,
       user: {
         $eq: user.studentId,
       },
       year,
-    });
+    }).toArray(), ...await this.tickets.find({
+      month: {
+        $gt: month,
+      },
+      user: {
+        $eq: user.studentId,
+      },
+      year,
+    }).toArray(), ...await this.tickets.find({
+      user: {
+        $eq: user.studentId,
+      },
+      year: {
+        $gt: year,
+      },
+    }).toArray()];
   }
 }
